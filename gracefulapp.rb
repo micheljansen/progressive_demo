@@ -10,4 +10,13 @@ class GracefulApp < Sinatra::Base
   get '/' do
     erb :index
   end
+
+  get '/page/:partial' do |partial|
+    erb partial
+  end
+
+  get '/:page' do |page|
+    erb :index, :locals => {:partial => page}
+  end
+
 end
