@@ -17,6 +17,52 @@ body.progressive nav .progressive a {
   color: white;
 }
     </style>
+    <script type="text/javascript" src="lib/path.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script>
+      function clearPanel(){
+        // You can put some code in here to do fancy DOM transitions, such as fade-out or slide-in.
+      }
+
+      Path.map("/introduction").to(function(){
+          event.preventDefault();
+          alert("introduction");
+      });
+
+      Path.map("/progressive").to(function(){
+          alert("progressive!");
+      }).enter(clearPanel);
+
+      Path.map("#/posts").to(function(){
+          alert("Posts!");
+      }).enter(clearPanel);
+
+
+       $(document).ready(function(){
+          // This line is used to start the HTML5 PathJS listener.  This will modify the
+          // `window.onpopstate` method accordingly, check that HTML5 is supported, and
+          // fall back to hashtags if you tell it to.  Calling it with no arguments will
+          // cause it to do nothing if HTML5 is not supported
+          Path.history.listen();
+
+          // If you would like it to gracefully fallback to Hashtags in the event that HTML5
+          // isn't supported, just pass `true` into the method.
+
+          // Path.history.listen(true);
+
+          $("a").click(function(event){
+            event.preventDefault();
+            
+            // To make use of the HTML5 History API, you need to tell your click events to
+            // add to the history stack by calling the `Path.history.pushState` method. This
+            // method is analogous to the regular `window.history.pushState` method, but
+            // wraps calls to it around the PathJS dispatched.  Conveniently, you'll still have
+            // access to any state data you assign to it as if you had manually set it via
+            // the standard methods.
+            Path.history.pushState({}, "", $(this).attr("href"));
+          });
+        });
+    </script>
   </head>
   <body class="<%= page %>">
     <nav class="topbar">
@@ -24,8 +70,8 @@ body.progressive nav .progressive a {
         <div class="container">
           <a class="brand" href="/">Progressive Demo</a>
           <ul class="nav">
-            <li class="introduction"><a href="introduction">Introduction</a></li>
-            <li class="progressive"><a href="progressive">Progressive Enhancement</a></li>
+            <li class="introduction"><a href="/introduction">Introduction</a></li>
+            <li class="progressive"><a href="/progressive">Progressive Enhancement</a></li>
           </ul>
         </div>
       </div>
