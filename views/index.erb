@@ -1,14 +1,43 @@
 <html>
   <head>
     <title><%= page %></title>
+    <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
+    <style type="text/css">
+body {
+  padding-top: 40px;
+}
+
+body.introduction nav .introduction a,
+body.progressive nav .progressive a {
+  background: black;
+  color: white;
+}
+    </style>
   </head>
   <body class="<%= page %>">
-    <nav>
-      <ul>
-        <li><a href="introduction">Introduction</a></li>
-        <li><a href="progressive">Progressive Enhancement</a></li>
-      </ul>
+    <nav class="topbar">
+      <div class="fill">
+        <div class="container">
+          <a class="brand" href="/">Progressive Demo</a>
+          <ul class="nav">
+            <li class="introduction"><a href="introduction">Introduction</a></li>
+            <li class="progressive"><a href="progressive">Progressive Enhancement</a></li>
+          </ul>
+        </div>
+      </div>
     </nav>
-    <%= partial page %>
+
+    <div class="container">
+
+      <div class="content">
+        <%= partial page %>
+      </div>
+
+      <footer>
+        <p>&copy; Company 2011</p>
+      </footer>
+
+    </div> <!-- /container -->
+    
   </body>
 </html>
