@@ -2,7 +2,13 @@
   <head>
     <title><%= page %></title>
   </head>
-  <body>
+  <body class="<%= page %>">
+    <nav>
+      <ul>
+        <li><a href="introduction">Introduction</a></li>
+        <li><a href="progressive">Progressive Enhancement</a></li>
+      </ul>
+    </nav>
     <%= partial page %>
   </body>
 </html>
