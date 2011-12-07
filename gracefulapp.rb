@@ -1,5 +1,13 @@
 require 'sinatra'
+require "sinatra/reloader" if development?
 
-get '/' do
-  erb :index
+class GracefulApp < Sinatra::Base
+
+  configure :development do
+    register Sinatra::Reloader
+  end
+
+  get '/' do
+    erb :index
+  end
 end
