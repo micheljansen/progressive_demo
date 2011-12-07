@@ -20,6 +20,7 @@ class GracefulApp < Sinatra::Base
   end
 
   get '/:page' do |page|
+    sleep 1
     erb :index, :locals => {:page => page}
   end
 
