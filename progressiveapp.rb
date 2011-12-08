@@ -28,4 +28,9 @@ class ProgressiveApp < Sinatra::Base
     end
   end
 
+  # legacy route, so you can see the output without having to do an XHR
+  get '/partials/:page' do |page|
+    partial page
+  end
+
 end
