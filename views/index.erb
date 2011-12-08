@@ -26,27 +26,33 @@ body[data-page="progressive"] nav .progressive a {
         if(Path["initial_page"]) { return } // ignore the first load
         var page = this.params["page"]
         var current_page = $("body")[0].getAttribute("data-page");
+        //console.log(current_page +" -> "+page);
 
         $("body")[0].setAttribute("data-page", page)
         $("#content").html("loading...");
 
-        $.ajax("/partials/"+this.params["page"], {timeout: 2000})
+        $.ajax("/partials/"+page, {timeout: 2000})
           .done(function(data) {
             $("#content").html(data)
           })
           .fail(function(jqXHR, textStatus, errorThrown) {
+            Path.routes.current = "error"
             $("#content").html(textStatus +
-              " <a href='"+window.location.href+"' onClick='window.location.reload()'>try again</a>")
+              " <a href='"+window.location.href+"'>try again</a>")
           })
       })
 
       $(document).ready(function(){
-        Path.history.listen();
+        Path.history.listen()
 
-        $("a").click(function(event){
-          event.preventDefault();
-          Path["initial_page"] = false
-          Path.history.pushState({}, "", $(this).attr("href"))
+        $("a").live("click", function(event){
+          var url = $(this).attr("href");
+
+          if(Path.match(url)) {
+            event.preventDefault()
+            Path["initial_page"] = false
+            Path.history.pushState({}, "", $(this).attr("href"))
+          }
         });
       })
     </script>
