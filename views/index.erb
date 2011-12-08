@@ -25,6 +25,7 @@ body[data-page="progressive"] nav .progressive a {
         console.log(page)
 
         $("body")[0].setAttribute("data-page", page)
+        $("#content").html("loading...");
 
         $.ajax({
           url: "/partials/"+this.params["page"], 
