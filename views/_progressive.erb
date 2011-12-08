@@ -1,2 +1,111 @@
-<h2>Progressive Enhancement</h2>
-<p>Cool stuff</p>
+<h1>Progressive Enhancement with Path.js</h1>
+<p>
+This little demo uses Path.js and jQuery to progressively enhance
+the navigation on this minisite.
+Without JavaScript, the site consists of two pages:
+<a href="/pages/introduction">introduction</a> and 
+<a href="/pages/progressive">progressive</a>.
+With JavaScript, the site turns into a 
+<a href="http://en.wikipedia.org/wiki/Single-page_application">Single Page Application</a>
+that updates the content dynamically using AJAX requests.
+</p>
+
+<h2>The baseline: everything serverside</h2>
+For browsers without JavaScript, we generate the two pages on the server.
+This is easily done with a few lines of code in <a href="http://www.sinatrarb.com/">Sinatra</a>:
+<pre>
+<%=escape_html <<-eos
+get '/' do
+  redirect "/pages/introduction"
+end
+
+get '/pages/:page' do |page|
+  erb :index, :locals => {:page => page}
+end
+eos
+%></pre>
+
+Additionally, there are three templates:
+<a href="https://github.com/micheljansen/progressive_demo/blob/master/views/index.erb">index.erb</a>,
+which contains the general structure of the page, with the navigation bar etc.
+and two partial templates that contain just the content that is unique to that page:
+<a href="https://github.com/micheljansen/progressive_demo/blob/master/views/_introduction.erb">_introduction.erb</a>
+and
+<a href="https://github.com/micheljansen/progressive_demo/blob/master/views/_progressive.erb">_progressive.erb</a>.
+The index.erb template is passed the name of the page,
+so it knows which partial template to use to render the content.
+
+<h2>Making it dynamic: Path.js</h2>
+<p>
+Now that we have a working baseline, we can progressively enhance that
+using AJAX to fetch just the content we want and smoothly replace that on the page.
+As explained in the <a href="/pages/introduction">introduction</a>,
+this is hard to do without messing up the browser history and URL bar.
+</p>
+
+<p>
+This is why we use 
+<a href="https://github.com/mtrpcic/pathjs">Path.js</a>;
+a very simple JavaScript routing library.
+At the time of writing it is under 200 lines of code.
+It allows you to map URLs to actions
+that you can act on in JavaScript.
+Path.js even supports the 
+<a href="https://github.com/mtrpcic/pathjs/wiki/HTML5-PushState">HTML5 History API via PushState</a>
+so it is able to maintain a consistent state of the address bar while keeping
+back button functionality intact.
+</p>
+
+<p>
+The heart of the trick fits in a few lines of JavaScript (simplified):
+
+<pre>
+// Define Route
+Path.map("/pages/:page").to(function(){
+  $("#content").html("loading...");
+
+  $.ajax("/partials/"+this.params["page"])
+    .done(function(data) {
+      $("#content").html(data)
+    })
+})
+
+// Wire links to go through Path using jQuery
+$(document).ready(function(){
+  Path.history.listen()
+
+  $("a").live("click", function(event){
+    if(Path.match(url)) {
+      event.preventDefault()
+      Path.history.pushState({}, "", $(this).attr("href"))
+    }
+  });
+})
+</pre>
+
+What this does is catch all links to "/pages/pagename"
+and perform an AJAX request to "/partials/pagename" instead.
+</p>
+
+<p>
+What remains, is adding some code on the server side
+to serve the partial content:
+<pre>
+def partial(partial)
+  erb "_#{partial}".to_sym
+end
+
+get '/partials/:partial' do |page|
+  partial page
+end
+</pre>
+</p>
+
+<p>
+That's all!
+Using JavaScript, we can now add some nice transitions, animations etc.
+but the meat of the work is done.
+The same templates are used whether the page is loaded from <code>index.erb</code>
+or served up as a partial via AJAX, so there is no duplication of code.
+For bonus points, you can also use layouts.
+</p>

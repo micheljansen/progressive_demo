@@ -4,7 +4,7 @@ require "sinatra/reloader" if development?
 class ProgressiveApp < Sinatra::Base
 
   def simulate_delay
-    sleep 1+rand(2)
+    # sleep 1+rand(2)
   end
 
   def partial(partial)
@@ -16,7 +16,7 @@ class ProgressiveApp < Sinatra::Base
   end
 
   get '/' do
-    erb :index
+    redirect "/pages/introduction"
   end
 
   get '/pages/:page' do |page|
