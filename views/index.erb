@@ -1,4 +1,4 @@
-<html>
+
   <head>
     <title><%= page %></title>
     <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
@@ -11,8 +11,8 @@ body {
   margin-top: 1em;
 }
 
-body.introduction nav .introduction a,
-body.progressive nav .progressive a {
+body[data-page="introduction"] nav .introduction a,
+body[data-page="progressive"] nav .progressive a {
   background: black;
   color: white;
 }
@@ -21,7 +21,10 @@ body.progressive nav .progressive a {
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script>
       Path.map("/pages/:page").to(function(){
-        console.log(this.params["page"])
+        var page = this.params["page"]
+        console.log(page)
+
+        $("body")[0].setAttribute("data-page", page)
 
         $.ajax({
           url: "/partials/"+this.params["page"], 
@@ -42,7 +45,7 @@ body.progressive nav .progressive a {
       })
     </script>
   </head>
-  <body class="<%= page %>">
+  <body data-page="<%= page %>">
     <nav class="topbar">
       <div class="fill">
         <div class="container">
