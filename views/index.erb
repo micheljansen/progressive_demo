@@ -26,7 +26,6 @@ body[data-page="progressive"] nav .progressive a {
         if(Path["initial_page"]) { return } // ignore the first load
         var page = this.params["page"]
         var current_page = $("body")[0].getAttribute("data-page");
-        console.log(current_page +" -> " +page)
 
         $("body")[0].setAttribute("data-page", page)
         $("#content").html("loading...");
@@ -36,10 +35,8 @@ body[data-page="progressive"] nav .progressive a {
             $("#content").html(data)
           })
           .fail(function(jqXHR, textStatus, errorThrown) {
-            console.log("error")
-            console.log(errorThrown)
-            console.log(jqXHR)
-            $("#content").html(textStatus)
+            $("#content").html(textStatus +
+              " <a href='"+window.location.href+"' onClick='window.location.reload()'>try again</a>")
           })
       })
 
