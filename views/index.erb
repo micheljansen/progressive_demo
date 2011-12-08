@@ -21,23 +21,25 @@ body.progressive nav .progressive a {
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script>
       Path.map("/pages/:page").to(function(){
-          console.log(this.params["page"])
-          $.ajax({
-            url: "/partials/"+this.params["page"], 
-            success: function(data){
-              $("#content").html(data);
-            }
-          });
+        console.log(this.params["page"])
+
+        $.ajax({
+          url: "/partials/"+this.params["page"], 
+          success: function(data){
+            $("#content").html(data);
+          }
+
+        });
       })
 
-     $(document).ready(function(){
+      $(document).ready(function(){
         Path.history.listen();
 
         $("a").click(function(event){
           event.preventDefault();
           Path.history.pushState({}, "", $(this).attr("href"));
         });
-      });
+      })
     </script>
   </head>
   <body class="<%= page %>">
