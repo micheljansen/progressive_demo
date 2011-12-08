@@ -3,6 +3,10 @@ require "sinatra/reloader" if development?
 
 class GracefulApp < Sinatra::Base
 
+  def simulate_delay
+    sleep 1+rand(2)
+  end
+
   def partial(partial)
     erb "_#{partial}".to_sym
   end
@@ -16,12 +20,12 @@ class GracefulApp < Sinatra::Base
   end
 
   get '/pages/:page' do |page|
-    sleep 1
+    simulate_delay
     erb :index, :locals => {:page => page}
   end
 
   get '/partials/:partial' do |page|
-    sleep 1
+    simulate_delay
     partial page
   end
 
