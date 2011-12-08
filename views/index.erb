@@ -35,10 +35,15 @@ body[data-page="progressive"] nav .progressive a {
 
         $.ajax({
           url: "/partials/"+this.params["page"], 
-          success: function(data){
-            $("#content").html(data);
+          timeout: 2000,
+          success: function(data) {
+            $("#content").html(data)
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.log("error");
+            console.log(errorThrown);
+            $("#content").html(textStatus);
           }
-
         });
       })
 
