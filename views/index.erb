@@ -21,7 +21,13 @@ body.progressive nav .progressive a {
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script>
       Path.map("/pages/:page").to(function(){
-          alert(this.params["page"]);
+          console.log(this.params["page"])
+          $.ajax({
+            url: "/partials/"+this.params["page"], 
+            success: function(data){
+              $("#content").html(data);
+            }
+          });
       })
 
      $(document).ready(function(){
@@ -49,7 +55,7 @@ body.progressive nav .progressive a {
 
     <div class="container">
 
-      <div class="content">
+      <div id="content" class="content">
         <%= partial page %>
       </div>
 
