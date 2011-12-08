@@ -2,5 +2,5 @@ require 'bundler'
 
 Bundler.require
 
-require './gracefulapp.rb'
-run GracefulApp
+require './progressiveapp.rb'
+run ProgressiveApp

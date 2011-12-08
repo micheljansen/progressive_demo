@@ -1,7 +1,7 @@
 require 'sinatra'
 require "sinatra/reloader" if development?
 
-class GracefulApp < Sinatra::Base
+class ProgressiveApp < Sinatra::Base
 
   def simulate_delay
     sleep 1+rand(2)
