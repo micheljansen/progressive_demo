@@ -20,15 +20,13 @@ body[data-page="progressive"] nav .progressive a {
     <script type="text/javascript" src="/lib/path.js"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script>
+      Path["initial_page"] = true
+
       Path.map("/pages/:page").to(function(){
+        if(Path["initial_page"]) { return } // ignore the first load
         var page = this.params["page"]
         var current_page = $("body")[0].getAttribute("data-page");
         console.log(current_page +" -> " +page)
-        
-        if(page == current_page) {
-          // no need to transition to the same page we are on
-          return
-        }
 
         $("body")[0].setAttribute("data-page", page)
         $("#content").html("loading...");
@@ -52,7 +50,8 @@ body[data-page="progressive"] nav .progressive a {
 
         $("a").click(function(event){
           event.preventDefault();
-          Path.history.pushState({}, "", $(this).attr("href"));
+          Path["initial_page"] = false
+          Path.history.pushState({}, "", $(this).attr("href"))
         });
       })
     </script>
