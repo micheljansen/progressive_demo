@@ -35,6 +35,7 @@
         //console.log(current_page +" -> "+page);
 
         $("body")[0].setAttribute("data-page", page)
+        document.title = page;
         $("#content").html("loading...");
 
         $.ajax("/pages/"+page, {timeout: 2000})
