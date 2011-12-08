@@ -26,14 +26,13 @@ eos
 %></pre>
 
 Additionally, there are three templates:
-<a href="https://github.com/micheljansen/progressive_demo/blob/master/views/index.erb">index.erb</a>,
+<a href="https://github.com/micheljansen/progressive_demo/blob/master/views/layout.erb">layout.erb</a>,
 which contains the general structure of the page, with the navigation bar etc.
 and two partial templates that contain just the content that is unique to that page:
-<a href="https://github.com/micheljansen/progressive_demo/blob/master/views/_introduction.erb">_introduction.erb</a>
+<a href="https://github.com/micheljansen/progressive_demo/blob/master/views/introduction.erb">introduction.erb</a>
 and
-<a href="https://github.com/micheljansen/progressive_demo/blob/master/views/_progressive.erb">_progressive.erb</a>.
-The index.erb template is passed the name of the page,
-so it knows which partial template to use to render the content.
+<a href="https://github.com/micheljansen/progressive_demo/blob/master/views/progressive.erb">progressive.erb</a>.
+The contents of introduction.erb or progressive.erb are rendered inside layout.erb in place of the "yield" expression.
 
 <h2>Making it dynamic: Path.js</h2>
 <p>
@@ -60,6 +59,7 @@ back button functionality intact.
 The heart of the trick fits in a few lines of JavaScript (simplified):
 
 <pre>
+<%=escape_html <<-eos
 // Define Route
 Path.map("/pages/:page").to(function(){
   $("#content").html("loading...");
@@ -81,7 +81,8 @@ $(document).ready(function(){
     }
   });
 })
-</pre>
+eos
+%></pre>
 
 What this does is catch all links to "/pages/pagename"
 and perform an AJAX request to "/partials/pagename" instead.
@@ -91,14 +92,16 @@ and perform an AJAX request to "/partials/pagename" instead.
 What remains, is adding some code on the server side
 to serve the partial content:
 <pre>
-def partial(partial)
-  erb "_#{partial}".to_sym
+<%=escape_html <<-eos
+def partial(template, options = {})
+  erb template.to_sym, options.merge({:layout => false})
 end
 
 get '/partials/:partial' do |page|
   partial page
 end
-</pre>
+eos
+%></pre>
 </p>
 
 <p>
@@ -107,5 +110,28 @@ Using JavaScript, we can now add some nice transitions, animations etc.
 but the meat of the work is done.
 The same templates are used whether the page is loaded from <code>index.erb</code>
 or served up as a partial via AJAX, so there is no duplication of code.
-For bonus points, you can also use layouts.
+</p>
+
+<h2>Making it even nicer</h2>
+<p>
+Having a special route for the partial content feels a bit redundant.
+Fortunately, it is easy to use the same route for both rendered and partial content:
+<pre>
+<%=escape_html <<-eos
+get '/pages/:page' do |page|
+  if request.xhr?
+    partial page
+  else
+    erb page.to_sym, {:locals => {:page => page}}
+  end
+end
+eos
+%></pre>
+
+Now it serves us the whole layout plus content on regular requests,
+and just the partial content for AJAX requests.
+</p>
+<p>
+See the whole thing on <a href="https://github.com/micheljansen/progressive_demo">Github</a>
+or <a href="#">watch a demo</a>
 </p>
