@@ -1,24 +1,26 @@
-
+<html>
   <head>
     <title><%= page %></title>
     <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
     <style type="text/css">
-body {
-  padding-top: 40px;
-}
+      body {
+        padding-top: 40px;
+      }
 
-.content {
-  margin-top: 1em;
-}
+      .content {
+        margin-top: 1em;
+      }
 
-body[data-page="introduction"] nav .introduction a,
-body[data-page="progressive"] nav .progressive a {
-  background: black;
-  color: white;
-}
+      body[data-page="introduction"] nav .introduction a,
+      body[data-page="progressive"] nav .progressive a {
+        background: black;
+        color: white;
+      }
     </style>
+
     <script type="text/javascript" src="/lib/path.js"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
     <script>
       Path["initial_page"] = true
 
@@ -57,6 +59,7 @@ body[data-page="progressive"] nav .progressive a {
       })
     </script>
   </head>
+
   <body data-page="<%= page %>">
     <nav class="topbar">
       <div class="fill">
@@ -77,6 +80,6 @@ body[data-page="progressive"] nav .progressive a {
       </div>
 
     </div> <!-- /container -->
-    
+
   </body>
 </html>
