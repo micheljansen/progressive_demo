@@ -37,7 +37,7 @@
         $("body")[0].setAttribute("data-page", page)
         $("#content").html("loading...");
 
-        $.ajax("/partials/"+page, {timeout: 2000})
+        $.ajax("/pages/"+page, {timeout: 2000})
           .done(function(data) {
             $("#content").html(data)
           })
@@ -80,7 +80,7 @@
     <div class="container">
 
       <div id="content" class="content">
-        <%= partial page %>
+        <%= yield %>
       </div>
 
     </div> <!-- /container -->

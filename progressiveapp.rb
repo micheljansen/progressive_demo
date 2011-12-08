@@ -7,10 +7,6 @@ class ProgressiveApp < Sinatra::Base
     # sleep 1+rand(2)
   end
 
-  def partial(partial)
-    erb "_#{partial}".to_sym
-  end
-
   configure :development do
     register Sinatra::Reloader
   end
@@ -21,12 +17,7 @@ class ProgressiveApp < Sinatra::Base
 
   get '/pages/:page' do |page|
     simulate_delay
-    erb :index, :locals => {:page => page}
-  end
-
-  get '/partials/:partial' do |page|
-    simulate_delay
-    partial page
+    erb page.to_sym
   end
 
 end
