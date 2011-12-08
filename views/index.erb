@@ -22,7 +22,13 @@ body[data-page="progressive"] nav .progressive a {
     <script>
       Path.map("/pages/:page").to(function(){
         var page = this.params["page"]
-        console.log(page)
+        var current_page = $("body")[0].getAttribute("data-page");
+        console.log(current_page +" -> " +page)
+        
+        if(page == current_page) {
+          // no need to transition to the same page we are on
+          return
+        }
 
         $("body")[0].setAttribute("data-page", page)
         $("#content").html("loading...");
