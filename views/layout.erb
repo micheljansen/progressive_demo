@@ -29,27 +29,6 @@
     <script>
       Path["initial_page"] = true
 
-      Path.map("/pages/:page").to(function(){
-        if(Path["initial_page"]) { return } // ignore the first load
-        var page = this.params["page"]
-        var current_page = $("body")[0].getAttribute("data-page");
-        //console.log(current_page +" -> "+page);
-
-        $("body")[0].setAttribute("data-page", page)
-        document.title = page;
-        $("#content").html("loading...");
-
-        $.ajax("/pages/"+page, {timeout: 2000})
-          .done(function(data) {
-            $("#content").html(data)
-          })
-          .fail(function(jqXHR, textStatus, errorThrown) {
-            Path.routes.current = "error"
-            $("#content").html(textStatus +
-              " <a href='"+window.location.href+"'>try again</a>")
-          })
-      })
-
       $(document).ready(function(){
         Path.history.listen()
 
@@ -71,10 +50,6 @@
       <div class="fill">
         <div class="container">
           <a class="brand" href="/">Progressive Demo</a>
-          <ul class="nav">
-            <li class="introduction"><a href="/pages/introduction">Introduction</a></li>
-            <li class="progressive"><a href="/pages/progressive">Implementation</a></li>
-          </ul>
         </div>
       </div>
     </nav>
@@ -84,10 +59,6 @@
       <div id="content" class="content">
         <%= yield %>
       </div>
-
-      <footer>
-        Progressive Enhancement Demo by <a href="http://micheljansen.org">Michel Jansen</a>.
-      </footer>
 
     </div> <!-- /container -->
 
