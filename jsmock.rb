@@ -1,3 +1,6 @@
+# Acts like a ruby hash
+# Outputs JavaScript templating queries
+
 class JSMock
   def initialize(name, parent=nil)
     @name = name.to_s
