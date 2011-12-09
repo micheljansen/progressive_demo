@@ -1,5 +1,13 @@
+<% jst = (defined? jst) ? jst : false %>
 <tr>
-  <td><%= book[:title] %></td>
-  <td><%= book[:author][:first] %> <%= book[:author][:last] %></td>
+    <td>
+      <%= jst ? js("book.title") : book[:title] %>
+    </td>
+    <td>
+      <% if(jst) %>
+        <%= js("author.first") %> <%= js("author.last") %>
+      <% else %>
+        <%= book[:author][:first] %> <%= book[:author][:last] %></td>
+      <% end %>
   <td><%= book[:year] %></td>
 </tr>

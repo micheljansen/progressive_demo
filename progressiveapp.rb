@@ -12,6 +12,12 @@ class ProgressiveApp < Sinatra::Base
     erb template.to_sym, options.merge({:layout => false})
   end
 
+  helpers do
+    def js(towrap)
+      "<%= #{towrap} %>"
+    end
+  end
+
   configure :development do
     register Sinatra::Reloader
   end
