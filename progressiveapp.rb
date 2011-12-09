@@ -28,6 +28,45 @@ class ProgressiveApp < Sinatra::Base
     end
   end
 
+  get '/books' do
+    books = {
+      1 => {
+        :id => 1,
+        :title => "Adventures of Huckleberry Finn",
+        :author => {:first => "Mark", :last => "Twain"},
+        :year => 1884
+      },
+      2 => {
+        :id => 2,
+        :title => "The Adventures of Sherlock Holmes",
+        :author => {:first => "Sir Arthur", :last =>"Conan Doyle"},
+        :year => 1859
+      },
+      3 => {
+        :id => 3,
+        :title => "Ulysses",
+        :author => {:first => "James", :last => "Joyce"},
+        :year => 1922
+      },
+      4 => {
+        :id => 4,
+        :title => "Alice's Adventures in Wonderland",
+        :author => {:first => "Lewis", :last => "Carroll"},
+        :year => 1865
+      }
+    }
+
+    order = books.values.sort do |a,b|
+      a[:title] <=> b[:title]
+    end.map do |book|
+      book[:id]
+    end
+
+    results = order.map {|id| books[id]}
+
+    erb :books, :locals => {:page => "Books", :books => results}
+  end
+
   # legacy route, so you can see the output without having to do an XHR
   get '/partials/:page' do |page|
     partial page

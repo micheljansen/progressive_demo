@@ -1,0 +1,8 @@
+<h1>Books</h1>
+
+<table>
+  <tr><th>Title</th><th>Author</th><th>Year</th></tr>
+  <% books.each do |book| %>
+    <%= partial :book, :locals => {:book => book} %>
+  <% end %>
+</table>
