@@ -29,6 +29,8 @@ class ProgressiveApp < Sinatra::Base
   end
 
   get '/books' do
+    order_by = params[:order].to_sym
+
     books = {
       1 => {
         :id => 1,
@@ -56,13 +58,18 @@ class ProgressiveApp < Sinatra::Base
       }
     }
 
-    order = books.values.sort do |a,b|
-      a[:title] <=> b[:title]
-    end.map do |book|
-      book[:id]
+    results = []
+    if(order_by == :author)
+      results = books.values.sort do |a,b|
+        a[:author][:last] <=> b[:author][:last]
+      end
+    else
+      results = books.values.sort do |a,b|
+        a[order_by] <=> b[order_by]
+      end
     end
 
-    results = order.map {|id| books[id]}
+    ordered_ids = results.map {|book| book[:id]}
 
     erb :books, :locals => {:page => "Books", :books => results}
   end

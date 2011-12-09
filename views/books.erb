@@ -1,7 +1,10 @@
 <h1>Books</h1>
 
 <table>
-  <tr><th>Title</th><th>Author</th><th>Year</th></tr>
+  <tr>
+    <th><a id="order_by_title" href="?order=title">Title</a></th>
+    <th><a id="order_by_author" href="?order=author">Author</a></th>
+    <th><a id="order_by_year" href="?order=year">Year</a></th></tr>
   <% books.each do |book| %>
     <%= partial :book, :locals => {:book => book} %>
   <% end %>
