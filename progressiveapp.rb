@@ -70,7 +70,11 @@ class ProgressiveApp < Sinatra::Base
       end
     end
 
-    erb :books, :locals => {:page => "Books", :books => results}
+    results_json = results.to_json
+
+    erb :books, :locals => {:page => "Books", 
+                            :books => results, 
+                            :results_json => results_json}
   end
 
   # legacy route, so you can see the output without having to do an XHR
