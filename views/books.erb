@@ -19,11 +19,17 @@
 <script>
   var results_json = <%=results_json%>
   console.log(results_json)
-  $(document).ready(function(){
+
+  function render_list() {
     var book_template = _.template($("#book_template").html())
     $("#results_list").html("")
     _(results_json).each(function(book) {
       $("#results_list").append(book_template({book: book}))
     })
+  }
+
+  $(function(){
+    render_list()
   })
-</script>
+
+ </script>
