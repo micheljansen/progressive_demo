@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'json'
 require "sinatra/reloader" if development?
+require "jsmock"
 
 class ProgressiveApp < Sinatra::Base
 

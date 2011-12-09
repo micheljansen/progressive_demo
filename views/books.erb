@@ -11,7 +11,7 @@
 </table>
 
 <script type="text/template" id="book_template">
-  <%= partial :book, :locals => {:jst => true, :book => books.first}%>
+  <%= partial :book, :locals => {:jst => true, :book => JSMock.new("book")}%>
 </script>
 
 <script>
