@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'json'
 require "sinatra/reloader" if development?
 
 class ProgressiveApp < Sinatra::Base
@@ -68,8 +69,6 @@ class ProgressiveApp < Sinatra::Base
         a[order_by] <=> b[order_by]
       end
     end
-
-    ordered_ids = results.map {|book| book[:id]}
 
     erb :books, :locals => {:page => "Books", :books => results}
   end
