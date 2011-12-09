@@ -2,9 +2,9 @@
 
 <table>
   <tr>
-    <th><a id="order_by_title" href="?order=title">Title</a></th>
-    <th><a id="order_by_author" href="?order=author">Author</a></th>
-    <th><a id="order_by_year" href="?order=year">Year</a></th></tr>
+    <th><a class="sort_link" id="order_by_title" href="?order=title">Title</a></th>
+    <th><a class="sort_link" id="order_by_author" href="?order=author">Author</a></th>
+    <th><a class="sort_link" id="order_by_year" href="?order=year">Year</a></th></tr>
   <tbody id="results_list">
     <% books.each do |book| %>
       <%= partial :book, :locals => {:book => book} %>
@@ -29,7 +29,17 @@
   }
 
   $(function(){
-    render_list()
+    //render_list()
   })
 
+  $("a.sort_link").click(function(e) {
+    var parms = $(this).attr('href')
+    e.preventDefault()
+    $.getJSON('/books.json'+parms, function(data) {
+      results_json = data
+      console.log(results_json)
+      render_list()
+    })
+  })
  </script>
+

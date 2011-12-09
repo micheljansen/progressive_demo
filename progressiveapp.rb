@@ -36,8 +36,8 @@ class ProgressiveApp < Sinatra::Base
     end
   end
 
-  get '/books' do
-    order_by = params[:order].to_sym
+  get '/books:format?' do |format|
+    order_by = params[:order].nil? ? :title : params[:order].to_sym
 
     books = {
       1 => {
@@ -79,9 +79,13 @@ class ProgressiveApp < Sinatra::Base
 
     results_json = results.to_json
 
-    erb :books, :locals => {:page => "Books", 
-                            :books => results, 
-                            :results_json => results_json}
+    if(format == ".json") 
+      results_json
+    else
+      erb :books, :locals => {:page => "Books", 
+                              :books => results, 
+                              :results_json => results_json}
+    end
   end
 
   # legacy route, so you can see the output without having to do an XHR
