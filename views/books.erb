@@ -5,9 +5,11 @@
     <th><a id="order_by_title" href="?order=title">Title</a></th>
     <th><a id="order_by_author" href="?order=author">Author</a></th>
     <th><a id="order_by_year" href="?order=year">Year</a></th></tr>
-  <% books.each do |book| %>
-    <%= partial :book, :locals => {:book => book} %>
-  <% end %>
+  <tbody id="results_list">
+    <% books.each do |book| %>
+      <%= partial :book, :locals => {:book => book} %>
+    <% end %>
+  </tbody>
 </table>
 
 <script type="text/template" id="book_template">
@@ -16,6 +18,12 @@
 
 <script>
   var results_json = <%=results_json%>
-  console.log(results_json);
+  console.log(results_json)
+  $(document).ready(function(){
+    var book_template = _.template($("#book_template").html())
+    $("#results_list").html("")
+    _(results_json).each(function(book) {
+      $("#results_list").append(book_template({book: book}))
+    })
+  })
 </script>
-
